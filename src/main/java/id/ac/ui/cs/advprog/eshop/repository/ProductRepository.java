@@ -36,6 +36,8 @@ public class ProductRepository {
     public Product delete(Product product) {
         productData.remove(product);
         return product;
+    }
+
     public Product update(Product product) {
         for (int i = 0; i < productData.size(); i++) {
             Product p = productData.get(i);
