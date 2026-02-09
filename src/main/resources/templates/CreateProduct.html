@@ -18,6 +18,9 @@
         <div class="form-group">
             <label for="quantityInput">Quantity</label>
             <input th:field="*{productQuantity}" type="text" class="form-control mb-4 col-4" id="quantityInput" placeholder="Enter product' name">
+            <div th:if="${#fields.hasErrors('productQuantity')}" th:errors="*{productQuantity}" class="text-danger">
+                Error message here
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
