@@ -34,11 +34,16 @@ public class ProductRepository {
     }
 
     public Product delete(Product product) {
-        productData.remove(product);
-        return product;
+        if (productData.remove(product)) {
+            return product;
+        }
+        return null;
     }
 
     public Product update(Product product) {
+        if (product == null) {
+            return null;
+        }
         for (int i = 0; i < productData.size(); i++) {
             Product p = productData.get(i);
             if (p.getProductId().equals(product.getProductId())) {
