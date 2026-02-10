@@ -19,13 +19,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product: ${products}">
+    <tr th:each="product, iterStat : ${products}">
       <td th:text="${product.productName}"></td>
       <td th:text="${product.productQuantity}"></td>
       <td>
-        <a th:href="@{/product/delete/{id}(id=${product.productId})}" class="btn btn-sm btn-danger">
+        <a th:href="@{/product/delete/{id}(id=${product.productId})}" th:id="'delete_button_' + ${iterStat.index}" class="btn btn-sm btn-danger">
           Delete
-        <a th:href="@{/product/edit/{id}(id=${product.productId})}" class="btn btn-sm btn-warning">
+        <a th:href="@{/product/edit/{id}(id=${product.productId})}" th:id="'edit_button_' + ${iterStat.index}" class="btn btn-sm btn-warning">
           Edit
         </a>
       </td>
