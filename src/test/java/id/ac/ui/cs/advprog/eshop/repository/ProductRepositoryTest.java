@@ -16,9 +16,14 @@ class ProductRepositoryTest {
 
     @InjectMocks
     ProductRepository productRepository;
+    Product productTest;
 
-    @BeforeEach
-    void setUp() {
+    void setUpEditDelete() {
+        productTest = new Product();
+        productTest.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd1");
+        productTest.setProductName("Sampo Cap Bambang");
+        productTest.setProductQuantity(100);
+        productRepository.create(productTest);
     }
 
     @Test
@@ -68,38 +73,57 @@ class ProductRepositoryTest {
 
     @Test
     void testEditProduct() {
-        Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product.setProductName("Sampo Cap Bambang");
-        product.setProductQuantity(100);
-        productRepository.create(product);
-
+        setUpEditDelete();
         Product updatedProduct = new Product();
-        updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd1");
         updatedProduct.setProductName("Sampo Cap Usep");
-        updatedProduct.setProductQuantity(-50);
+        updatedProduct.setProductQuantity(50);
         productRepository.update(updatedProduct);
 
-        Product result = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        Product result = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd1");
 
         assertNotNull(result);
         assertEquals("Sampo Cap Usep", result.getProductName());
-        //value quantity tetap bisa negatif karena pengecekan dilakukan di level controller
-        assertEquals(-50, result.getProductQuantity());
+        assertEquals(50, result.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductNotFound() {
+        setUpEditDelete();
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("tidak-ada");
+        updatedProduct.setProductName("Sampo Cap Usep");
+        updatedProduct.setProductQuantity(50);
+        assertNull(productRepository.update(updatedProduct));
     }
 
     @Test
     void testDeleteProduct() {
-        Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product.setProductName("Sampo Cap Bambang");
-        product.setProductQuantity(100);
-        productRepository.create(product);
-
-        productRepository.delete(product);
-
+        setUpEditDelete();
+        productRepository.delete(productTest);
         Iterator<Product> productIterator = productRepository.findAll();
-
         assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testDeleteProductNotFound() {
+        Product product = new Product();
+        assertNull(productRepository.delete(product));
+    }
+
+    @Test
+    void testFindById() {
+        setUpEditDelete();
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd1";
+        Product productFound = productRepository.findById(productId);
+        assertEquals(productFound, productTest);
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        setUpEditDelete();
+        String productId = "tidak-ada";
+        Product productFound = productRepository.findById(productId);
+        assertNull(productFound);
     }
 }
