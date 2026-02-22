@@ -10,6 +10,6 @@ public class HomePageController {
 
     @GetMapping
     public String createHomePage() {
-        return "HomePage"; // Nama file html tanpa .html
+        return "homePage"; // Nama file html tanpa .html
     }
 }
