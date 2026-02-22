@@ -10,4 +10,8 @@ class EshopApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void mainMethodShouldRun() {
+        EshopApplication.main(new String[] {});
+    }
 }
