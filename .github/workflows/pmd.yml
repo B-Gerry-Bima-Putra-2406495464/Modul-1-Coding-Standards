@@ -5,6 +5,7 @@ on:
 
 jobs:
   pmd:
+    name: Run PMD
     runs-on: ubuntu-22.04
 
     steps:
@@ -25,9 +26,16 @@ jobs:
           unzip -q pmd.zip -d .
           mv pmd-bin-7.0.0-rc4 pmd
 
-      - name: Run PMD
+      - name: Run PMD Analysis
         run: |
           ./pmd/bin/pmd check \
             --dir src/main/java \
-            --rulesets category/java/bestpractices.xml \
-            --format text
+            --rulesets category/java/bestpractices.xml,category/java/codestyle.xml,category/java/design.xml \
+            --format text \
+            --report-file pmd-report.txt
+
+      - name: Upload PMD report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmd-report
+          path: pmd-report.txt
