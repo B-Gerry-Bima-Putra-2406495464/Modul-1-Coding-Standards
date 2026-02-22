@@ -8,15 +8,26 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the Git repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Set up Java
+      - name: Set up Java toolchain
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "21"
 
+      - name: Download PMD 7.0.0-rc4
+        run: |
+          curl -L -o pmd.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip
+          unzip -q pmd.zip -d .
+          mv pmd-bin-7.0.0-rc4 pmd
+
       - name: Run PMD
-        uses: pmd/pmd-github-action@v1
-        with:
-          version: "7.0.0-rc4"
+        run: |
+          ./pmd/bin/pmd check \
+            --dir src/main/java \
+            --rulesets category/java/bestpractices.xml \
+            --format text
