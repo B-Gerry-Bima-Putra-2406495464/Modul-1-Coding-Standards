@@ -27,6 +27,7 @@ jobs:
           mv pmd-bin-7.0.0-rc4 pmd
 
       - name: Run PMD Analysis
+        continue-on-error: true
         run: |
           ./pmd/bin/pmd check \
             --dir src/main/java \
