@@ -1,0 +1,22 @@
+name: PMD Code Analysis
+
+on:
+  push:
+
+jobs:
+  pmd:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Run PMD
+        uses: pmd/pmd-github-action@v1
+        with:
+          version: "7.0.0-rc4"
