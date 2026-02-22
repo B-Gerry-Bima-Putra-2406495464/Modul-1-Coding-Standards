@@ -62,7 +62,7 @@ public class ProductController {
     @PostMapping("/edit")
     public String editProductPost(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "EditProduct";
+            return "editProduct";
         }
         service.update(product);
         return "redirect:list";
