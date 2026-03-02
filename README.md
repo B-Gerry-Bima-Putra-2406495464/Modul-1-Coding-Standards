@@ -17,3 +17,17 @@ Untuk memperbaikinya saya membaca satu per satu warning dari PMD lalu melakukan 
 
 2. Menurut saya implementasi ini sudah memenuhi konsep Continuous Integration, karena setiap push atau pull request otomatis menjalankan unit test dan analisis code quality, jadi setiap perubahan kode langsung divalidasi tanpa harus dicek manual, hal ini membuat proses integrasi menjadi lebih aman
 Selain itu konsep Continuous Deployment juga sudah terpenuhi karena setelah merge ke branch main aplikasi langsung terdeploy otomatis ke Koyeb, saya tidak perlu deploy secara manual lagi sehingga proses menjadi lebih cepat dan terstruktur. Pipeline ini membantu mengurangi human error dan membuat pengembangan menjadi lebih efisien
+
+**MODUL 2 REFFLECTION**
+
+1. SRP : Di before solid CarRepository method create() ada logika untuk pembuatan uuid, saya memindahkan logika ini ke CarServiceImpl karena memang tugasnya service, tugas repository hanya sebagai penyimpanan.
+OCP : Di before solid CarRepository method update() pembaruan variable car di ubah satu persatu walaupun sudah menerima parameter object Car, saya merubah agar langsung update data object nya secara langsung, agar jika ada penambahan variable baru tidak perlu mengubah lagi method nya, jadi terbuka untuk ekstensi dan tertutup dari modifikasi.
+LSP : Di before solid CarController meng-extends class ProductController, padahal car controller memiliki routing spesifik ke '/car' jadi tidak bisa menggantikan ProductController, jadi saya mengapus extends di CarController.
+DIP : Di before solid pada CarController pembuatan object carService tidak memanggil interfacenya tetapi langsung implementasinya yang melanggar DIP karena higher level module bergantung ke lower level module, saya mengubah tipe variablenya menjadi CarService yaitu interfacenya.
+
+2. Dari perubahan yang saya lakukan terlihat setelah saya mengimplementasikan prinsip SOLID kode menjadi lebih mudah dibaca, lebih mudah di extend, setiap class dan method melakukan tugasnya sesuai peran jadi tidak tercampur aduk untuk memahami flow code nya.
+
+3. jika tidak ada penerapan SRP (logika UUID) kode tercampur aduk jadi susah untuk memahami flow code nya dan melakukan pembaruan. Jika tidak menerapkan OCP (method update()) jika ingin menambahkan varuable baru perlu mengubah kode di CarRepository juga. Jika tidak menerapkan LSP bisa memicu bug dimana endpoint Product bisa diakses lewat routing Car. Jika tidak menerapkan DIP membuat pengujian menjadi sulit karena tidak bisa melakukan mock object.
+
+
+
